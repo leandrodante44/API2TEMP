@@ -1,10 +1,8 @@
 <?php 
     require '../autentication.php';
     require '../connection.php';
-    $body = json_decode(file_get_contents('php://input'),true);
     $collection = $conn->lab2dev->critical_log;
-    $query = $_POST;
-    $result = $collection->find($query)->toArray();
+    $result = $collection->find(json_decode(json_encode($_POST,JSON_NUMERIC_CHECK ),JSON_NUMERIC_CHECK))->toArray();
     $myJSON = json_encode($result);
     header('Content-type: application/json');
     echo $myJSON

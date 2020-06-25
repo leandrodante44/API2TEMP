@@ -1,10 +1,10 @@
 <?php
     require 'vendor/autoload.php';
-    use MongoDB\Client as Mongo;
+    require 'utils.php';
     $user = "flavio";
     $pwd = 'paciencia';
     $sev = 'barbudao.duckdns.org';
 
-    $conn = new Mongo("mongodb://${user}:${pwd}@${sev}:27017");
+    $conn = new MongoDB\Client("mongodb://${user}:${pwd}@${sev}:27017");
 
 ?> 
