@@ -37,13 +37,17 @@ if ($type == 'm') {
                     'month' => [
                         '$month' => '$date_created'
                     ],
-                    'comp' => '$totem.fk_company'
+                    'comp' => '$totem.fk_company',
+                    'temp' => '$temp'
                 ]
             ],
             [
                 '$match' => [
                     "comp" => intval($comp),
-                    'month' => $i
+                    'month' => $i,
+                    "temp" => [
+                        '$gte' => 37
+                    ]
                 ]
             ],
             [
