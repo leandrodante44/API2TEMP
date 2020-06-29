@@ -1,24 +1,59 @@
 <?php
 
 require '../../autentication.php';
-header('Content-type: application/json');
-$return = [
-    "data" => [
-        [
-            "NAME" => 'Leandro Dante Oliveira',
-            "HOUR" => '12:00',
-            "TEMP" => 35
-        ],
-        [
-            "NAME" => 'Lael Jader',
-            "HOUR" => '11:58',
-            "TEMP" => 38
-        ],
-        [
-            "NAME" => 'Flavio Alves',
-            "HOUR" => '11:57',
-            "TEMP" => 37
+require '../../connection.php';
+$comp = $_POST['comp'];
+$data = [];
+$aggLCAS = [
+    [
+        '$lookup' => [
+            "from" => 'totem',
+            "localField" => 'fk_totem',
+            "foreignField" => 'id',
+            "as" => 'totem'
+        ]
+    ],
+    [
+        '$project' => [
+            'name' => 1,
+            'rfid' => '$fk_rfid',
+            'temp' => '$temp',
+            'date_created' => '$date_created',
+            'comp' => '$totem.fk_company'
+        ]
+    ],
+    [
+        '$match' => [
+            "comp" => intval($comp),
         ]
     ]
+];
+$LCAS = $conn->lab2dev->totem_log->aggregate($aggLCAS)->toArray();
+foreach ($LCAS as $key => $CAS) {
+    $aggCUST = [
+
+        [
+            '$match' => [
+                "rfid" => $CAS['rfid'],
+            ]
+        ],
+        [
+            '$project' => [
+                'name' =>  '$name'
+            ]
+        ],
+    ];
+    $CUST = $conn->lab2dev->customer->aggregate($aggCUST)->toArray();
+    $dThis = [
+        'NAME' => $CUST[0]['name'],
+        'HOUR' => '00:00',
+        'TEMP' => $CAS['temp']
+    ];
+    array_push($data,$dThis);
+}
+
+header('Content-type: application/json');
+$return = [
+    "data" => $data
 ];
 echo json_encode($return);
