@@ -65,7 +65,7 @@ $aggCN = [
     ],
     [
         '$match' => [
-            //"totem.fk_company" => $comp,
+            "totem.fk_company" => intval($comp),
             "temp" => [
                 '$lt' => 37
             ]
