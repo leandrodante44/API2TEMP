@@ -67,7 +67,7 @@ $aggCN = [
         '$match' => [
             "totem.fk_company" => intval($comp),
             "temp" => [
-                '$lt' => 37
+                '$lt' => 37.5
             ]
         ]
     ],
@@ -90,7 +90,7 @@ $aggCC = [
         '$match' => [
             "totemobj.fk_company" => intval($comp),
             "temp" => [
-                '$gte' => 37
+                '$gte' => 37.5
             ]
         ]
     ],

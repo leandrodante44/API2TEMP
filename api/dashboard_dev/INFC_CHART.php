@@ -46,7 +46,7 @@ if ($type == 'm') {
                     "comp" => intval($comp),
                     'month' => $i,
                     "temp" => [
-                        '$gte' => 37
+                        '$gte' => 37.5
                     ]
                 ]
             ],

@@ -96,7 +96,7 @@ $aggENCR = [
             "comp" => intval($comp),
             'month' => intval(date('m')),
             'temp' => [
-                '$gte' => 37
+                '$gte' => 37.5
             ]
         ]
     ],
@@ -132,7 +132,7 @@ $aggENCR_L = [
             "comp" => intval($comp),
             'month' => intval(date('m')) - 1,
             'temp' => [
-                '$gte' => 37
+                '$gte' => 37.5
             ]
         ]
     ],
@@ -156,27 +156,27 @@ if ($ENNM_L == 0) {
     $ENNM_R = (($ENNM / $ENNM_L) - 1) * 100;
 }
 
-if ($ENCR[0]['qtde'] == 0) {
+if ($TTEN[0]['qtde'] == 0) {
     $IDSP = 0;
 } else {
-    $IDSP = $TTEN[0]['qtde'] / $ENCR[0]['qtde'] * 100;
+    $IDSP =   $ENCR[0]['qtde'] /$TTEN[0]['qtde'] * 100;
 }
-if ($ENCR_L[0]['qtde'] == 0) {
+if ($TTEN_L[0]['qtde'] == 0) {
     $IDSP_L = 0;
 } else {
-    $IDSP_L = $TTEN_L[0]['qtde'] / $ENCR_L[0]['qtde'] * 100;
+    $IDSP_L =  $ENCR_L[0]['qtde']/$TTEN_L[0]['qtde'] * 100;
 }
 $IDSP_R = $IDSP - $IDSP_L;
 
 header('Content-type: application/json');
 $return = [
     "TTEN"    => $TTEN[0]['qtde'],
-    "TTEN_R"  => $TTEN_R,
+    "TTEN_R"  => round($TTEN_R,2),
     "ENNM"    => $ENNM,
-    "ENNM_R"  => $ENNM_R,
+    "ENNM_R"  => round($ENNM_R,2),
     "ENCR"    => $ENCR[0]['qtde'],
-    "ENCR_R"  => $ENCR_R,
-    "IDSP"    => $IDSP,
-    "IDSP_R"  => $IDSP_R
+    "ENCR_R"  => round($ENCR_R,2),
+    "IDSP"    => round($IDSP,2),
+    "IDSP_R"  => round($IDSP_R,2)
 ];
 echo json_encode($return);
